@@ -181,7 +181,7 @@ class OrderDetials {
 class Order {
     private String orderId;
     private String customerId;
-    private Date date;
+    private Date date; // java.util.Date
     private List<OrderDetials> orderDetailsList;
 
     public Order() {
@@ -240,7 +240,35 @@ public class Main {
    
    public static void placeOrder(Order order) {
    
+       try {
        
+           final String DB_URL = "jdbc:mysql://localhost:3306/pos";
+           final String DB_USERNAME = "root";
+           final String DB_PASSWORD = "ijse";
+           
+           Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+           
+           // INSERT INTO orders VALUES('O001', 'C001', '2026-10-06');
+           String query = "INSERT INTO orders VALUES(?, ?, ?)";
+           
+           PreparedStatement pstmt = conn.prepareStatement(query);
+           
+           pstmt.setString(1, order.getOrderId());
+           pstmt.setDate(2, (java.sql.Date)order.getDate()); // java.sql.Date -> ISSUE
+           pstmt.setString(3, order.getCustomerId());
+           
+           int result = pstmt.executeUpdate();
+           
+           if(result > 0) {
+            System.out.println("Order saved successfully!");
+           } else {
+               System.out.println("Something went wrong!");
+           }
+           
+       } catch(Exception e) {
+            e.printStackTrace();
+            System.out.println("Something went wrong!");
+       }
        
    }
    
