@@ -238,6 +238,37 @@ public class Main {
 
    // ======================= Order Functionality Handling ==========================
    
+   public static void addOrderDetails(Order order) {
+        try {
+           
+            final String DB_URL = "jdbc:mysql://localhost:3306/pos";
+            final String DB_USERNAME = "root";
+            final String DB_PASSWORD = "ijse";
+
+            Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+
+            for (OrderDetials orderDetials : order.getOrderDetailsList()) {
+                // INSERT INTO orders_detail VALUES(1, 'O001', 'I001', 10, 100.00);
+                String query = "INSERT INTO order_detail VALUES(?, ?, ?, ?, ?)";
+                
+                PreparedStatement pstmt = conn.prepareStatement(query);
+                
+                pstmt.setInt(1, ?);
+                pstmt.setString(2, order.getOrderId());
+                pstmt.setString(3, orderDetials.getItemId());
+                pstmt.setString(4, orderDetials.getQty());
+                pstmt.setString(5, ?);
+                
+            }
+            
+            
+
+        } catch(Exception e) {
+             e.printStackTrace();
+             System.out.println("Something went wrong!");
+        }
+   }
+   
    public static void placeOrder(Order order) {
    
        try {
@@ -264,7 +295,9 @@ public class Main {
            int result = pstmt.executeUpdate();
            
            if(result > 0) {
-            System.out.println("Order saved successfully!");
+            
+               addOrderDetails(order);            
+            
            } else {
                System.out.println("Something went wrong!");
            }
