@@ -249,7 +249,7 @@ public class Main {
 
             for (OrderDetials orderDetials : order.getOrderDetailsList()) {
                 // INSERT INTO orders_detail VALUES(1, 'O001', 'I001', 10, 100.00);
-                String query = "INSERT INTO order_detail VALUES(?, ?, ?, ?)";
+                String query = "INSERT INTO order_detail (order_id, item_id, qty, unit_price) VALUES(?, ?, ?, ?)";
                 
                 PreparedStatement pstmt = conn.prepareStatement(query);
                 
