@@ -249,20 +249,33 @@ public class Main {
 
             for (OrderDetials orderDetials : order.getOrderDetailsList()) {
                 // INSERT INTO orders_detail VALUES(1, 'O001', 'I001', 10, 100.00);
-                String query = "INSERT INTO order_detail VALUES(?, ?, ?, ?, ?)";
+                String query = "INSERT INTO order_detail VALUES(?, ?, ?, ?)";
                 
                 PreparedStatement pstmt = conn.prepareStatement(query);
                 
-                pstmt.setInt(1, ?);
-                pstmt.setString(2, order.getOrderId());
-                pstmt.setString(3, orderDetials.getItemId());
-                pstmt.setString(4, orderDetials.getQty());
-                pstmt.setString(5, ?);
+                pstmt.setString(1, order.getOrderId());
+                pstmt.setString(2, orderDetials.getItemId());
+                pstmt.setInt(3, orderDetials.getQty());
                 
+                String itemQuery = "SELECT * FROM item WHERE id=?";
+                PreparedStatement itemPstmt = conn.prepareStatement(itemQuery);
+                itemPstmt.setString(1, orderDetials.getItemId());
+                
+                ResultSet rs = itemPstmt.executeQuery();
+                
+                if(rs.next()) {
+                    pstmt.setDouble(4, rs.getDouble("unitPrice"));
+                } else {
+                    throw new SQLException("Invalid Item!");
+                }
+                
+                int result = pstmt.executeUpdate();
+                
+                if(!(result>0)) {
+                   throw new SQLException("Something went wrong!");
+                }
             }
-            
-            
-
+  
         } catch(Exception e) {
              e.printStackTrace();
              System.out.println("Something went wrong!");
@@ -1218,7 +1231,7 @@ public class Main {
     }
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args)  {
         loadMainMenu();
     }
 }
