@@ -254,7 +254,11 @@ public class Main {
            PreparedStatement pstmt = conn.prepareStatement(query);
            
            pstmt.setString(1, order.getOrderId());
-           pstmt.setDate(2, (java.sql.Date)order.getDate()); // java.sql.Date -> ISSUE
+           /*
+           order.getDate() -> java.util.Date
+           java.sql.Date date = new java.sql.Date(order.getDate().getTime());
+           */
+           pstmt.setDate(2, new java.sql.Date(order.getDate().getTime()));         
            pstmt.setString(3, order.getCustomerId());
            
            int result = pstmt.executeUpdate();
