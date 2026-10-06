@@ -238,18 +238,10 @@ public class Main {
 
    // ======================= Order Functionality Handling ==========================
    
-   public static void addOrderDetails(Order order) {
-        try {
-           
-            final String DB_URL = "jdbc:mysql://localhost:3306/pos";
-            final String DB_USERNAME = "root";
-            final String DB_PASSWORD = "ijse";
-
-            Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
-
+   public static void addOrderDetails(Connection conn, Order order) throws Exception {
             for (OrderDetials orderDetials : order.getOrderDetailsList()) {
                 // INSERT INTO orders_detail VALUES(1, 'O001', 'I001', 10, 100.00);
-                String query = "INSERT INTO order_detail (order_id, item_id, qty, unit_price) VALUES(?, ?, ?, ?)";
+                String query = "INSERT INTO order_detail (order_id, item_id, qty, unit_price)VALUESX(?, ?, ?, ?)";
                 
                 PreparedStatement pstmt = conn.prepareStatement(query);
                 
@@ -275,22 +267,20 @@ public class Main {
                    throw new SQLException("Something went wrong!");
                 }
             }
-  
-        } catch(Exception e) {
-             e.printStackTrace();
-             System.out.println("Something went wrong!");
-        }
    }
    
    public static void placeOrder(Order order) {
-   
+       Connection conn = null;
+       
        try {
        
            final String DB_URL = "jdbc:mysql://localhost:3306/pos";
            final String DB_USERNAME = "root";
            final String DB_PASSWORD = "ijse";
            
-           Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+           conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+           
+           conn.setAutoCommit(false);
            
            // INSERT INTO orders VALUES('O001', 'C001', '2026-10-06');
            String query = "INSERT INTO orders VALUES(?, ?, ?)";
@@ -309,15 +299,32 @@ public class Main {
            
            if(result > 0) {
             
-               addOrderDetails(order);            
+               addOrderDetails(conn, order);            
             
            } else {
                System.out.println("Something went wrong!");
            }
            
+           conn.commit();
+           
        } catch(Exception e) {
-            e.printStackTrace();
-            System.out.println("Something went wrong!");
+            
+           try {
+               conn.rollback();
+           } catch(SQLException ex) {
+               ex.printStackTrace();
+               System.out.println(ex.getMessage());
+           }
+           e.printStackTrace();
+           System.out.println("Something went wrong!");
+       
+       } finally {
+           try {
+               conn.setAutoCommit(true);
+           } catch(SQLException ex) {
+               ex.printStackTrace();
+               System.out.println(ex.getMessage());
+           }
        }
        
    }
@@ -613,7 +620,7 @@ public class Main {
             while(result.next()) {
                 String id = result.getString("id");
                 String name = result.getString("name");
-                double unitPrice = result.getDouble("unit_price");
+                double unitPrice = result.getDouble("unitPrice");
                 int qty = result.getInt("qty");
 
                 Item item = new Item(id, name, unitPrice, qty);
@@ -690,7 +697,7 @@ public class Main {
 
                 String iid = result.getString("id");
                 String name = result.getString("name");
-                double unitPrice = result.getDouble("unit_price");
+                double unitPrice = result.getDouble("unitPrice");
                 int qty = result.getInt("qty");
 
                 System.out.println(iid + " - " + name + " - " + unitPrice + " - " + qty);
