@@ -15,7 +15,7 @@ import java.util.List;
  * @author kavinduakash
  */
 public class ItemController {
-    public static void addItem(Item item) {
+    public void addItem(Item item) {
        try {
 
             final String DB_URL = "jdbc:mysql://localhost:3306/pos";
@@ -53,7 +53,7 @@ public class ItemController {
 
    }
 
-   public static void updateItem(Item item) {
+   public void updateItem(Item item) {
        try {
 
             final String DB_URL = "jdbc:mysql://localhost:3306/pos";
@@ -91,7 +91,7 @@ public class ItemController {
 
    }
 
-   public static List<Item> getAllItems() {
+   public List<Item> getAllItems() {
 
        List<Item> itemList = new ArrayList<Item>();
 
@@ -133,7 +133,7 @@ public class ItemController {
 
    }
 
-   public static void deleteItem(String id) {
+   public void deleteItem(String id) {
        try {
 
             final String DB_URL = "jdbc:mysql://localhost:3306/pos";
@@ -168,7 +168,7 @@ public class ItemController {
 
    }
 
-   public static void searchItem(String id) {
+   public void searchItem(String id) {
        try {
 
             final String DB_URL = "jdbc:mysql://localhost:3306/pos";

@@ -12,24 +12,23 @@ import java.util.List;
 import java.time.LocalDate;
 import java.util.Date;
 
-// ========== Modelsc==============
+// ========== Models ==============
 import hdse77jdbc.model.Customer;
 import hdse77jdbc.model.Item;
 import hdse77jdbc.model.OrderDetials;
 import hdse77jdbc.model.Order;
 
-
+// ========== Controller ==============
 import hdse77jdbc.controller.CustomerController;
+import hdse77jdbc.controller.ItemController;
+import hdse77jdbc.controller.OrderController;
 
 public class Main {
    private static final Scanner scanner = new Scanner(System.in);
 
    static CustomerController customerController = new CustomerController();
-
-   
-   
-   
-   
+   static ItemController itemController = new ItemController();
+   static OrderController orderController = new OrderController();
    
    public static void addCustomerForm() {
        System.out.println("\n======================================================================");
@@ -154,7 +153,7 @@ public class Main {
             double unitPrice = Double.parseDouble(unitPriceText);
             int qty = Integer.parseInt(qtyText);
 
-            addItem(new Item(id, name, unitPrice, qty));
+            itemController.addItem(new Item(id, name, unitPrice, qty));
         } catch (NumberFormatException e) {
             System.out.println("Invalid Unit Price or Quantity!");
         }
@@ -183,7 +182,7 @@ public class Main {
             double unitPrice = Double.parseDouble(unitPriceText);
             int qty = Integer.parseInt(qtyText);
 
-            updateItem(new Item(id, name, unitPrice, qty));
+            itemController.updateItem(new Item(id, name, unitPrice, qty));
         } catch (NumberFormatException e) {
             System.out.println("Invalid Unit Price or Quantity!");
         }
@@ -198,12 +197,12 @@ public class Main {
         String id = scanner.nextLine().trim();
 
         System.out.println("======================================================================");
-        searchItem(id);
+        itemController.searchItem(id);
     }
 
     public static void viewAllItemsUI() {
 
-        List<Item> itemList = getAllItems();
+        List<Item> itemList = itemController.getAllItems();
 
         System.out.println("\n======================================================================");
         System.out.println("                           VIEW ALL ITEMS");
@@ -249,7 +248,7 @@ public class Main {
 
         System.out.println("======================================================================");
         if(confirm.equals("Y")) {
-            deleteItem(id);
+            itemController.deleteItem(id);
         } else {
             System.out.println("Invalid Input!");
         }
@@ -319,7 +318,7 @@ public class Main {
             order.setCustomerId(customerId);
             order.setOrderDetailsList(orderDetialList);
             
-            placeOrder(order);
+            orderController.placeOrder(order);
             
         }
         

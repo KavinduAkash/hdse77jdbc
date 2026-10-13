@@ -13,7 +13,7 @@ import java.sql.SQLException;
  * @author kavinduakash
  */
 public class OrderController {
-    public static void addOrderDetails(Connection conn, Order order) throws Exception {
+    public void addOrderDetails(Connection conn, Order order) throws Exception {
             for (OrderDetials orderDetials : order.getOrderDetailsList()) {
                 // INSERT INTO orders_detail VALUES(1, 'O001', 'I001', 10, 100.00);
                 String query = "INSERT INTO order_detail (order_id, item_id, qty, unit_price)VALUESX(?, ?, ?, ?)";
@@ -44,7 +44,7 @@ public class OrderController {
             }
    }
    
-   public static void placeOrder(Order order) {
+   public void placeOrder(Order order) {
        Connection conn = null;
        
        try {
