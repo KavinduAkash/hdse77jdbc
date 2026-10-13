@@ -9,16 +9,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import hdse77jdbc.db.DBConnection;
 
 public class CustomerController {
     public void addCustomer(Customer cus) {
        try {
 
-            final String DB_URL = "jdbc:mysql://localhost:3306/pos";
-            final String DB_USERNAME = "root";
-            final String DB_PASSWORD = "ijse";
-
-            Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+            Connection conn = DBConnection.getInstance().getConnection();
 
             String query = "INSERT INTO customer VALUES(?,?,?,?,?)";
             PreparedStatement pstmt = conn.prepareStatement(query);
@@ -50,11 +47,7 @@ public class CustomerController {
    public void updateCustomer(Customer cus) {
        try {
 
-            final String DB_URL = "jdbc:mysql://localhost:3306/pos";
-            final String DB_USERNAME = "root";
-            final String DB_PASSWORD = "ijse";
-
-            Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+            Connection conn = DBConnection.getInstance().getConnection();
 
             String query = "UPDATE customer SET name=?, address=?, phone=?, email=? WHERE id=?";
 
@@ -90,11 +83,7 @@ public class CustomerController {
 
        try {
 
-            final String DB_URL = "jdbc:mysql://localhost:3306/pos";
-            final String DB_USERNAME = "root";
-            final String DB_PASSWORD = "ijse";
-
-            Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+            Connection conn = DBConnection.getInstance().getConnection();
 
             String query = "SELECT * FROM customer";
 
@@ -128,11 +117,7 @@ public class CustomerController {
    public void deleteCustomer(String id) {
        try {
 
-            final String DB_URL = "jdbc:mysql://localhost:3306/pos";
-            final String DB_USERNAME = "root";
-            final String DB_PASSWORD = "ijse";
-
-            Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+            Connection conn = DBConnection.getInstance().getConnection();
 
             String query = "DELETE FROM customer WHERE id=?";
 
@@ -161,11 +146,7 @@ public class CustomerController {
    public void searchCustomer(String id) {
        try {
 
-            final String DB_URL = "jdbc:mysql://localhost:3306/pos";
-            final String DB_USERNAME = "root";
-            final String DB_PASSWORD = "ijse";
-
-            Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+            Connection conn = DBConnection.getInstance().getConnection();
 
             String query = "SELECT * FROM customer WHERE id=?";
 
